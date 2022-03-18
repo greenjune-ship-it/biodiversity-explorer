@@ -1,4 +1,5 @@
 library(shiny)
+library(shinycssloaders)
 library(dplyr)
 library(data.table)
 library(leaflet)
@@ -9,7 +10,9 @@ source("utils/data_wrangling.R")
 source("modules/sliderInputModule.R")
 source("modules/mapModule.R")
 
-data <- getData()
+wholeDataset <- getData()
 
-sliderInputModule <- SliderInputModule$new()
-mapModule <- MapModule$new()
+sliderInputModule <- SliderInputModule$new(periodRange = wholeDataset$eventDate,
+                                           vernacularName = wholeDataset$vernacularName %>% unique(),
+                                           scientificName = wholeDataset$scientificName %>% unique())
+mapModule <- MapModule$new(wholeDataset = wholeDataset)
