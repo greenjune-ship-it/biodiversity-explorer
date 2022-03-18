@@ -1,9 +1,15 @@
-navbarPage("Biodiversity Explorer",
-           tabPanel("Map",
-                    testModule$ui()),
-           tabPanel("About"),
-           tabPanel(
-             "Test",
-             mapModule$ui()
-           )
+fluidPage(
+  titlePanel("Biodiversity Explorer"),
+  sidebarLayout(
+    sidebarPanel(
+      sliderInputModule$ui(),
+      width = 3
+    ),
+    mainPanel(
+      tabsetPanel(type = "tabs",
+                  tabPanel("Map", mapModule$ui())
+      ),
+      width = 8
+    )
+  )
 )

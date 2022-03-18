@@ -1,4 +1,10 @@
 function(input, output, session) {
+  sliderInputModule$callModule()
   mapModule$callModule()
-  testModule$callModule()
+
+  # pass output of sliderInput to Map
+  observe({
+    sliderInputModule %1>1% mapModule
+  })
+
 }

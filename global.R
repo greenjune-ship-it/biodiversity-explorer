@@ -6,10 +6,10 @@ library(tidymodules)
 
 source("utils/data_wrangling.R")
 
+source("modules/sliderInputModule.R")
 source("modules/mapModule.R")
-source("modules/testModule.R")
 
 data <- getData()
 
+sliderInputModule <- SliderInputModule$new()
 mapModule <- MapModule$new()
-testModule <- TestModule$new()

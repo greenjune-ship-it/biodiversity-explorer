@@ -1,5 +1,5 @@
-TestModule <- R6::R6Class(
-  classname = "TestModule",
+SliderInputModule <- R6::R6Class(
+  classname = "SliderInputModule",
   inherit = TidyModule,
   private = list(
     .defaultSpeciesVernacularName = NULL,
@@ -8,17 +8,25 @@ TestModule <- R6::R6Class(
   public = list(
     initialize = function(...) {
       super$initialize(...)
+
+      # Ports definition starts here
+      self$definePort({
+        # Outputs
+        self$addOutputPort(
+          name = "eventDataRange",
+          description = "Data from range of observation dates",
+          sample = ""
+        )
+      })
     },
     ui = function() {
       tagList(
-        # tags$style(type = "text/css", "html, body {width:100%;height:100%}"),
         tags$div(
           sliderInput(self$ns("eventDateRange"), "Event Date", min = min(data$eventDate),
                       max = max(data$eventDate),
                       value = c(min(data$eventDate), max(data$eventDate))
           )
-        ),
-        tags$div(leafletOutput(self$ns("map")))
+        )
       )
     },
     server = function(input, output, session) {
@@ -29,16 +37,9 @@ TestModule <- R6::R6Class(
         data[eventDate >= input$eventDateRange[1] & eventDate <= input$eventDateRange[2]]
       })
 
-      output$map <- renderLeaflet({
-        leaflet(data) %>%
-          addTiles() %>%
-          fitBounds(~min(long), ~min(lat), ~max(long), ~max(lat))
-      })
-
-      observe({
-        leafletProxy("map", data = filteredData()) %>%
-          clearShapes() %>%
-          addCircles(lng = ~long, lat = ~lat, color = "#ffb482", fillOpacity = 0.7)
+      self$assignPort({
+        self$updateOutputPort(id = "eventDataRange",
+                              output = filteredData)
       })
 
     }
