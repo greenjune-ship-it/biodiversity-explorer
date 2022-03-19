@@ -7,12 +7,12 @@ SliderInputModule <- R6::R6Class(
     .scientificName = NULL
   ),
   public = list(
-    initialize = function(periodRange, vernacularName, scientificName, ...) {
+    initialize = function(periodRange, scientificName, vernacularName, ...) {
       super$initialize(...)
 
       private$.periodRange <- periodRange
-      private$.vernacularName <- vernacularName
       private$.scientificName <- scientificName
+      private$.vernacularName <- vernacularName
 
       # Ports definition starts here
       self$definePort({

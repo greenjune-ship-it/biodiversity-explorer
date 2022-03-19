@@ -5,11 +5,23 @@ MapModule <- R6::R6Class(
     .wholeDataset = NULL
   ),
   public = list(
-    filterDatasetByDateRange = function(df, column, range) {
-      df[get(column) >= range[1] & get(column) <= range[2]]
+    filterDatasetByDateRange = function(.data, column, range) {
+      .data[get(column) >= range[1] & get(column) <= range[2]]
     },
-    filterDatasetBySpecies = function(df, species) {
-
+    filterDatasetBySpecies = function(.data, species) {
+      bind_rows(
+        .data %>% filter(scientificName %in% species),
+        .data %>% filter(vernacularName %in% species)
+      )
+    },
+    arrangeData = function(data, column, range, species) {
+      if (is.null(species)) {
+        data %>% self$filterDatasetByDateRange(column, range)
+      } else {
+        data %>%
+          self$filterDatasetByDateRange(column, range) %>%
+          self$filterDatasetBySpecies(species)
+      }
     },
     initialize = function(wholeDataset, ...) {
       super$initialize(...)
@@ -38,7 +50,7 @@ MapModule <- R6::R6Class(
       tagList(
         tags$div(
           leafletOutput(self$ns("map"), width = "100%", height = 700) %>%
-            withSpinner()
+            shinycssloaders::withSpinner()
         )
       )
     },
@@ -62,16 +74,23 @@ MapModule <- R6::R6Class(
         self$execInput("eventDataRange")
       })
 
+      # if user does not specify species, we display all species, but selection is null
       displayedSpecies <- reactive({
         self$execInput("selectedSpecies")
       })
 
-      observeEvent(displayedDateRange(), {
-        data <- self$filterDatasetByDateRange(
-          private$.wholeDataset, "eventDate", displayedDateRange()
-        )
+      dataToDisplay <- reactiveVal()
+      # update value
+      observe({
+        dataToDisplay(self$arrangeData(data = private$.wholeDataset,
+                                       column = "eventDate",
+                                       range = displayedDateRange(),
+                                       species = displayedSpecies()
+        ))
+      })
 
-        leafletProxy("map", data = data) %>%
+      observeEvent(dataToDisplay(), {
+        leafletProxy("map", data = dataToDisplay()) %>%
           clearShapes() %>%
           addCircles(lng = ~long,
                      lat = ~lat,
