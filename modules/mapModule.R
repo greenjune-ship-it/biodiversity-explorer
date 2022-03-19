@@ -8,6 +8,9 @@ MapModule <- R6::R6Class(
     filterDatasetByDateRange = function(df, column, range) {
       df[get(column) >= range[1] & get(column) <= range[2]]
     },
+    filterDatasetBySpecies = function(df, species) {
+
+    },
     initialize = function(wholeDataset, ...) {
       super$initialize(...)
 
@@ -15,12 +18,20 @@ MapModule <- R6::R6Class(
 
       # Ports definition starts here
       self$definePort({
-        # Inputs
+
+        # port 1
         self$addInputPort(
           name = "eventDataRange",
           description = "Data from range of observation dates",
           sample = ""
         )
+        # port 2
+        self$addInputPort(
+          name = "selectedSpecies",
+          description = "Observations by selected species",
+          sample = ""
+        )
+
       })
     },
     ui = function() {
@@ -46,13 +57,19 @@ MapModule <- R6::R6Class(
                      color = "#ffb482",
                      fillOpacity = 0.7)
       })
-      #
+
       displayedDateRange <- reactive({
         self$execInput("eventDataRange")
       })
 
+      displayedSpecies <- reactive({
+        self$execInput("selectedSpecies")
+      })
+
       observeEvent(displayedDateRange(), {
-        data <- self$filterDatasetByDateRange(private$.wholeDataset, "eventDate", displayedDateRange())
+        data <- self$filterDatasetByDateRange(
+          private$.wholeDataset, "eventDate", displayedDateRange()
+        )
 
         leafletProxy("map", data = data) %>%
           clearShapes() %>%

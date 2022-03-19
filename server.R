@@ -2,9 +2,10 @@ function(input, output, session) {
   sliderInputModule$callModule()
   mapModule$callModule()
 
-  # pass output of sliderInput to Map
+  # pass arguments via ports
   observe({
     sliderInputModule %1>1% mapModule
+    sliderInputModule %2>2% mapModule
   })
 
 }

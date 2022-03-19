@@ -16,7 +16,6 @@ SliderInputModule <- R6::R6Class(
 
       # Ports definition starts here
       self$definePort({
-        # Outputs
 
         # port 1
         self$addOutputPort(
@@ -24,7 +23,6 @@ SliderInputModule <- R6::R6Class(
           description = "Data from range of observation dates",
           sample = ""
         )
-
         # port 2
         self$addOutputPort(
           name = "selectedSpecies",
@@ -50,7 +48,7 @@ SliderInputModule <- R6::R6Class(
           tags$style(HTML('#q1 {margin-top: 30px}')),
           selectizeInput(
             inputId = self$ns("displayedSpecies"),
-            label = "Display custom species",
+            label = "Display custom species by scientific or vernacular name",
             choices = NULL,
             multiple = TRUE,
           ),
@@ -72,28 +70,21 @@ SliderInputModule <- R6::R6Class(
       # Don't remove the line below
       super$server(input, output, session)
 
-      eventDateRange <- reactiveVal()
-      observe({
-        eventDateRange(input$eventDateRange)
-      })
-
+      # server-side selectize
       updateSelectizeInput(
         session = session,
         inputId = "displayedSpecies",
-        choices = private$.scientificName,
+        choices = c(private$.scientificName, private$.vernacularName),
         server = TRUE
       )
 
-      observeEvent(input$displayedSpecies, {
-        print(input$displayedSpecies)
-      })
-
-
       self$assignPort({
+        # port 1
         self$updateOutputPort(id = "eventDataRange",
-                              output = eventDateRange)
-        # self$updateOutputPort(id = "selectedSpecies",
-        #                       output = "selectedSpecies")
+                              output = reactive({ input$eventDateRange }))
+        # port 2
+        self$updateOutputPort(id = "selectedSpecies",
+                              output = reactive({ input$displayedSpecies }))
       })
 
     }

@@ -27,7 +27,7 @@ renv::runTests()
 * Implement CI/ (autorun of code styler, lintr, tests in Travis)
 * Extract data directly from GBIF with [rgbif](https://docs.ropensci.org/rgbif/) package
 * Inspect code with profviz and improve performance
-* Implement selectize dropdown tested tree for species search
+* Implement selectize dropdown nested tree for species search
 
 ### Author
 
