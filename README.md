@@ -22,12 +22,12 @@ renv::runTests()
 
 ## Further Ideas
 
-* Add search by species feature
 * Reformat code and run test
 * Implement CI/ (autorun of code styler, lintr, tests in Travis)
 * Extract data directly from GBIF with [rgbif](https://docs.ropensci.org/rgbif/) package
 * Inspect code with profviz and improve performance
 * Implement selectize dropdown nested tree for species search
+* Add button to clear selections
 
 ### Author
 

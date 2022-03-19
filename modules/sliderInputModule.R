@@ -35,6 +35,8 @@ SliderInputModule <- R6::R6Class(
 
     ui = function() {
       tagList(
+        tags$div(tags$h4(tags$b("Customize view"))),
+        br(),
         tags$div(
           sliderInput(
             self$ns("eventDateRange"),
@@ -44,25 +46,16 @@ SliderInputModule <- R6::R6Class(
             value = c(min(private$.periodRange), max(private$.periodRange))
           )
         ),
+        br(),
         tags$div(
-          tags$style(HTML('#q1 {margin-top: 30px}')),
           selectizeInput(
             inputId = self$ns("displayedSpecies"),
-            label = "Display custom species by scientific or vernacular name",
+            label = "Display custom species by name",
             choices = NULL,
             multiple = TRUE,
-          ),
-          actionButton(
-            inputId = self$ns("clearSelection"),
-            label = NULL,
-            icon = icon("trash", "fa-sm")
+            width = "200%"
           )
-          # style = "display:inline-block; align-items: center;",
         )
-        # tags$div(
-        #   style = "display:inline-block; align-items: center;"
-        #
-        # )
       )
     },
 
