@@ -33,6 +33,10 @@ CustomizeInputModule <- R6::R6Class(
     ui = function() {
       tagList(
         tags$div(tags$h4(tags$b("Customize view"))),
+        tags$text(HTML("This is where you can customize date range and selected species to display on map.
+        Note, <b>all species</b> are displayed by default.
+        You can search and customize species by Scientific or Vernacular name.")),
+        br(),
         br(),
         tags$div(
           sliderInput(
