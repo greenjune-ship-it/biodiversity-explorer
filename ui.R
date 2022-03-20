@@ -2,7 +2,7 @@ fluidPage(
   titlePanel("Biodiversity Explorer"),
   sidebarLayout(
     sidebarPanel(
-      sliderInputModule$ui(),
+      customizeInputModule$ui(),
       width = 3
     ),
     mainPanel(

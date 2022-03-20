@@ -1,11 +1,12 @@
 function(input, output, session) {
-  sliderInputModule$callModule()
+
+  customizeInputModule$callModule()
   mapModule$callModule()
 
   # pass arguments via ports
   observe({
-    sliderInputModule %1>1% mapModule
-    sliderInputModule %2>2% mapModule
+    customizeInputModule %1>1% mapModule
+    customizeInputModule %2>2% mapModule
   })
 
 }

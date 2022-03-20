@@ -1,5 +1,5 @@
-SliderInputModule <- R6::R6Class(
-  classname = "SliderInputModule",
+CustomizeInputModule <- R6::R6Class(
+  classname = "CustomizeInputModule",
   inherit = TidyModule,
   private = list(
     .periodRange = NULL,
