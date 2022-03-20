@@ -17,17 +17,19 @@ renv::restore()
 ### Run tests
 
 ```
-renv::runTests()
+shiny::runTests()
 ```
 
 ## Further Ideas
 
 * Add tab with displayed data
-* Implement CI/ (autorun of code styler, lintr, tests in Travis)
-* Extract data directly from GBIF with [rgbif](https://docs.ropensci.org/rgbif/) package
+* Implement CI/CD; autorun of code styler, lintr, tests (gitHub actions or / and Travis)
+* Extract data directly from GBIF with [rgbif](https://docs.ropensci.org/rgbif/) package or create custom SQL database
+  and interface for usage
 * Inspect code with profviz and improve performance
 * Implement selectize dropdown nested tree for scientific species search
 * Add button to clear selections
+* Replace constant map size by fit to screen size
 
 ### Author
 

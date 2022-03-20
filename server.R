@@ -1,7 +1,6 @@
 function(input, output, session) {
   sliderInputModule$callModule()
   mapModule$callModule()
-  mapLegendModule$callModule()
 
   # pass arguments via ports
   observe({

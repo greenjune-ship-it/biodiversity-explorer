@@ -1,5 +1,5 @@
-getData <- function() {
-  fread(file = "data/occurenceInPoland.csv") %>%
+getData <- function(path) {
+  fread(file = path) %>%
     filter(!is.na(longitudeDecimal) & !is.na(latitudeDecimal)) %>%
     select(c(id, scientificName, vernacularName, longitudeDecimal, latitudeDecimal, eventDate)) %>%
     mutate(eventDate = as.Date(eventDate)) %>%
