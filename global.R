@@ -1,8 +1,10 @@
 library(shiny)
 library(tidymodules)
 library(dplyr)
+library(stringr)
 library(data.table)
 library(leaflet)
+library(RColorBrewer)
 
 source("utils/dataWranglingUtil.R")
 

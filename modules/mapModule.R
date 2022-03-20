@@ -2,7 +2,9 @@ MapModule <- R6::R6Class(
   classname = "MapModule",
   inherit = TidyModule,
   private = list(
-    .wholeDataset = NULL
+    .wholeDataset = NULL,
+    .defaultColumn = "scientificName",
+    .accessoryColumn = "vernacularName"
   ),
   public = list(
     filterDatasetByDateRange = function(.data, column, range) {
@@ -23,6 +25,39 @@ MapModule <- R6::R6Class(
           self$filterDatasetBySpecies(species)
       }
     },
+    getValuesFromProxy = function(proxy, column) {
+      attr(proxy$x, "leafletData")[[column]]
+    },
+    modifyLabelFormat = function(values) {
+      sep = " / "
+      labelFormat(
+        suffix = paste0(sep, "(", values, ")"),
+      )
+    },
+    displayDefaultMap = function(proxy) {
+      proxy %>%
+        addCircles(lng = ~long,
+                   lat = ~lat,
+                   color = "#FDB462",
+                   fillOpacity = 0.7)
+    },
+    displayCustomizedMap = function(proxy, factpal, mainColumn, accessoryColumn) {
+      mainValues <- self$getValuesFromProxy(proxy, mainColumn)
+      accessoryValues <- self$getValuesFromProxy(proxy, accessoryColumn)
+
+      proxy %>%
+        addCircles(lng = ~long,
+                   lat = ~lat,
+                   color = ~factpal(mainValues),
+                   fillOpacity = 0.7) %>%
+        addLegend(pal = factpal,
+                  values = mainValues,
+                  labFormat = self$modifyLabelFormat(accessoryValues),
+                  layerId = "colorLegend",
+                  title = "Selected species",
+                  position = "bottomright"
+        )
+    },
     initialize = function(wholeDataset, ...) {
       super$initialize(...)
 
@@ -30,7 +65,6 @@ MapModule <- R6::R6Class(
 
       # Ports definition starts here
       self$definePort({
-
         # port 1
         self$addInputPort(
           name = "eventDataRange",
@@ -43,7 +77,6 @@ MapModule <- R6::R6Class(
           description = "Observations by selected species",
           sample = ""
         )
-
       })
     },
     ui = function() {
@@ -90,12 +123,17 @@ MapModule <- R6::R6Class(
       })
 
       observeEvent(dataToDisplay(), {
-        leafletProxy("map", data = dataToDisplay()) %>%
-          clearShapes() %>%
-          addCircles(lng = ~long,
-                     lat = ~lat,
-                     color = "#ffb482",
-                     fillOpacity = 0.7)
+
+        proxy <- leafletProxy("map", data = dataToDisplay()) %>% clearShapes()
+        factpal <- colorFactor(palette = brewer.pal(n = 12, name = "Set3"),
+                               dataToDisplay()[[private$.defaultColumn]])
+
+        if (is.null(displayedSpecies())) {
+          self$displayDefaultMap(proxy)
+        } else {
+          self$displayCustomizedMap(proxy, factpal, private$.defaultColumn, private$.accessoryColumn)
+        }
+
       })
 
     }

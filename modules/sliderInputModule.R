@@ -16,7 +16,6 @@ SliderInputModule <- R6::R6Class(
 
       # Ports definition starts here
       self$definePort({
-
         # port 1
         self$addOutputPort(
           name = "eventDataRange",
@@ -29,10 +28,8 @@ SliderInputModule <- R6::R6Class(
           description = "Observations by selected species",
           sample = ""
         )
-
       })
     },
-
     ui = function() {
       tagList(
         tags$div(tags$h4(tags$b("Customize view"))),
@@ -58,7 +55,6 @@ SliderInputModule <- R6::R6Class(
         )
       )
     },
-
     server = function(input, output, session) {
       # Don't remove the line below
       super$server(input, output, session)
