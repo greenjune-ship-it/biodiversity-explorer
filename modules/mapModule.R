@@ -82,7 +82,7 @@ MapModule <- R6::R6Class(
     ui = function() {
       tagList(
         tags$div(
-          leafletOutput(self$ns("map"), width = "100%", height = 700) %>%
+          leafletOutput(self$ns("map"), height = "750px") %>%
             shinycssloaders::withSpinner()
         )
       )

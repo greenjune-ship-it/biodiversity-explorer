@@ -10,7 +10,6 @@ source("utils/dataWranglingUtil.R")
 
 source("modules/sliderInputModule.R")
 source("modules/mapModule.R")
-source("modules/mapLegendModule.R")
 
 wholeDataset <- getData()
 
