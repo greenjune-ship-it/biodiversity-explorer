@@ -22,6 +22,7 @@ shiny::runTests()
 
 ## Further Ideas
 
+* add roxigen2 documentation
 * Add tab with displayed data
 * add cicerone guide
 * Implement CI/CD; autorun of code styler, lintr, tests (gitHub actions or / and Travis)
