@@ -1,7 +1,5 @@
 # Biodiversity Explorer
 
-## About Project
-
 Biodiversity Explorer visualizes observed species on the map. Dataset comes
 from [Global Biodiversity Information Facility](https://www.gbif.org/), observations from Poland available by 8 March
 2020 are presented.
